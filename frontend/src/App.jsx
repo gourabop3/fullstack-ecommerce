@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { Route, Routes } from "react-router-dom";
-import Home from "./pages/Home";
+import Home from "./Pages/Home";
 import Collection from "./Pages/Collection"
 import About from "./Pages/About";
 import Contact from "./Pages/Contact";
@@ -13,7 +13,6 @@ import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import SearchBar from "./components/SearchBar";
 import { ToastContainer, toast } from 'react-toastify';
-import LatestCollections from "./components/LatestCollection";
 import Verify from "./Pages/Verify";
 
 const App = () => {
