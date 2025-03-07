@@ -195,7 +195,7 @@ const Add = ({ token }) => {
               setSizes(prev =>
                 prev.includes("XL") ? prev.filter(item => item !== "XL") : [...prev, "XL"]
               )}>
-              <p className={`${sizes.includes("S") ? "bg-pink-100" : "bg-pink-200"} px-3 py-1 cursor-pointer`}>S</p>
+              <p className={`${sizes.includes("S") ? "bg-pink-100" : "bg-pink-200"} px-3 py-1 cursor-pointer`}>XL</p>
             </div>
             <div onClick={() =>
               setSizes(prev =>
