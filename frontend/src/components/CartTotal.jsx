@@ -31,7 +31,7 @@ const CartTotal = () => {
           <b>
             {getCartAmount() === 0
               ? 0
-              : getCartAmount() + delivery_fee + currency}.00
+              : getCartAmount() + delivery_fee }.00{currency}
           </b>
         </div>
       </div>
