@@ -19,7 +19,7 @@ const OurPolicy = () => {
       <div>
         <img className='w-12 m-auto mb-5' src={assets.support_img}alt='exchange' />
         <p className='font-semibold'>Best Customer Support</p>
-        <p className='text-gray-400'>We provide 24/8 customer support</p>
+        <p className='text-gray-400'>We provide 24/7 customer support</p>
       </div>
     </section>
   );
