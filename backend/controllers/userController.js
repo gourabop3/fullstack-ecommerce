@@ -96,4 +96,188 @@ const adminLogin = async (req, res, next) => {
   }
 };
 
-export { registerUser, loginUser, adminLogin };
+// Add to wishlist
+const addToWishlist = async (req, res) => {
+  try {
+    const { productId } = req.body;
+    const { userId } = req.user;
+
+    const user = await userModel.findById(userId);
+    if (!user) {
+      return res.json({ success: false, message: "User not found" });
+    }
+
+    if (user.wishlist.includes(productId)) {
+      return res.json({ success: false, message: "Product already in wishlist" });
+    }
+
+    user.wishlist.push(productId);
+    await user.save();
+
+    res.json({ success: true, message: "Product added to wishlist" });
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, message: error.message });
+  }
+};
+
+// Remove from wishlist
+const removeFromWishlist = async (req, res) => {
+  try {
+    const { productId } = req.body;
+    const { userId } = req.user;
+
+    const user = await userModel.findById(userId);
+    if (!user) {
+      return res.json({ success: false, message: "User not found" });
+    }
+
+    user.wishlist = user.wishlist.filter(id => id.toString() !== productId);
+    await user.save();
+
+    res.json({ success: true, message: "Product removed from wishlist" });
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, message: error.message });
+  }
+};
+
+// Get wishlist
+const getWishlist = async (req, res) => {
+  try {
+    const { userId } = req.user;
+    
+    const user = await userModel.findById(userId).populate('wishlist');
+    if (!user) {
+      return res.json({ success: false, message: "User not found" });
+    }
+
+    res.json({ success: true, wishlist: user.wishlist });
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, message: error.message });
+  }
+};
+
+// Get user profile
+const getUserProfile = async (req, res) => {
+  try {
+    const { userId } = req.user;
+    
+    const user = await userModel.findById(userId).select('-password');
+    if (!user) {
+      return res.json({ success: false, message: "User not found" });
+    }
+
+    res.json({ success: true, user });
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, message: error.message });
+  }
+};
+
+// Update user profile
+const updateProfile = async (req, res) => {
+  try {
+    const { userId } = req.user;
+    const { name, phone } = req.body;
+
+    const user = await userModel.findById(userId);
+    if (!user) {
+      return res.json({ success: false, message: "User not found" });
+    }
+
+    if (name) user.name = name;
+    if (phone) user.phone = phone;
+
+    await user.save();
+
+    res.json({ success: true, message: "Profile updated successfully" });
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, message: error.message });
+  }
+};
+
+// Add user address
+const addAddress = async (req, res) => {
+  try {
+    const { userId } = req.user;
+    const addressData = req.body;
+
+    const user = await userModel.findById(userId);
+    if (!user) {
+      return res.json({ success: false, message: "User not found" });
+    }
+
+    user.addresses.push(addressData);
+    await user.save();
+
+    res.json({ success: true, message: "Address added successfully" });
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, message: error.message });
+  }
+};
+
+// Update user address
+const updateAddress = async (req, res) => {
+  try {
+    const { userId } = req.user;
+    const { addressId } = req.params;
+    const addressData = req.body;
+
+    const user = await userModel.findById(userId);
+    if (!user) {
+      return res.json({ success: false, message: "User not found" });
+    }
+
+    const addressIndex = user.addresses.findIndex(addr => addr._id.toString() === addressId);
+    if (addressIndex === -1) {
+      return res.json({ success: false, message: "Address not found" });
+    }
+
+    user.addresses[addressIndex] = { ...user.addresses[addressIndex], ...addressData };
+    await user.save();
+
+    res.json({ success: true, message: "Address updated successfully" });
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, message: error.message });
+  }
+};
+
+// Delete user address
+const deleteAddress = async (req, res) => {
+  try {
+    const { userId } = req.user;
+    const { addressId } = req.params;
+
+    const user = await userModel.findById(userId);
+    if (!user) {
+      return res.json({ success: false, message: "User not found" });
+    }
+
+    user.addresses = user.addresses.filter(addr => addr._id.toString() !== addressId);
+    await user.save();
+
+    res.json({ success: true, message: "Address deleted successfully" });
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, message: error.message });
+  }
+};
+
+export { 
+  registerUser, 
+  loginUser, 
+  adminLogin, 
+  addToWishlist, 
+  removeFromWishlist, 
+  getWishlist, 
+  getUserProfile, 
+  updateProfile, 
+  addAddress, 
+  updateAddress, 
+  deleteAddress 
+};
